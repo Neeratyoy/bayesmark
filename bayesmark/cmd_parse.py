@@ -161,6 +161,13 @@ def load_rev_number():
     # 3) Unclear if there is a cleaner way to do this
 
     # Get rev from version file (if running inside the pip-installable wheel without the git repo)
+
+    ##################
+    ### OUR CHANGE ###
+    ##################
+    return '327a886'
+    ##################
+
     try:
         from bayesmark import version
 

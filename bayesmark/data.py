@@ -99,12 +99,19 @@ def _csv_loader(dataset_name, return_X_y, data_root, clip_x=100):  # pragma: io
     # Assuming no missing data in source csv files at the moment, these will
     # result in error.
     df = pd.read_csv(
-        path, header=0, index_col=False, engine="c", na_filter=False, true_values=["true"], false_values=["false"]
+        path, header=0, index_col=False, engine="c", na_filter=False, true_values=["true"],
+        false_values=["false"]
     )
 
     label = df.columns[-1]  # Assume last col is target
 
     target = df.pop(label).values
+    ##################
+    ### OUR CHANGE ###
+    ##################
+    if target.dtype == 'int64':
+        target = target.astype(np.int_)
+    ##################
     if problem_type == ProblemType.clf:
         assert target.dtype in (np.bool_, np.int_)
         target = target.astype(np.int_)  # convert to int for skl
@@ -115,6 +122,13 @@ def _csv_loader(dataset_name, return_X_y, data_root, clip_x=100):  # pragma: io
 
     # Fill in an categorical variables (object dtype of cols names ..._cat)
     cat_cols = sorted(cc for cc in df.columns if cc.endswith("_cat") or df[cc].dtype.kind == "O")
+    ##################
+    ### OUR CHANGE ###
+    ##################
+    for column in df.columns:
+        if column not in cat_cols:
+            df[column] = df[column].values.astype(np.float_)
+    ##################
     df = pd.get_dummies(df, columns=cat_cols, drop_first=True, dtype=np.float_)
     # Could also sort all columns to be sure it will be reprod
 
