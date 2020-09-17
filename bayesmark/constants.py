@@ -66,7 +66,8 @@ PERF_BEST = "best"
 PERF_CLIP = "clip"
 
 # Choices used for test problems, there is some redundant specification with sklearn funcs file here
-MODEL_NAMES = ("DT", "MLP-adam", "MLP-sgd", "RF", "SVM", "ada", "kNN", "lasso", "linear")
+MODEL_NAMES = ("DT", "MLP-adam", "MLP-sgd", "RF", "SVM", "ada", "kNN", "lasso", "linear",
+               "DT2", "GBT")
 DATA_LOADER_NAMES = ("breast", "digits", "iris", "wine", "boston", "diabetes")
 
 SCORERS_CLF = ("nll", "acc")

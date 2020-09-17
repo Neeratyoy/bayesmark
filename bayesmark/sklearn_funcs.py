@@ -33,7 +33,8 @@ import warnings
 from abc import ABC, abstractmethod
 
 import numpy as np
-from sklearn.ensemble import AdaBoostClassifier, AdaBoostRegressor, RandomForestClassifier, RandomForestRegressor
+from sklearn.ensemble import AdaBoostClassifier, AdaBoostRegressor, RandomForestClassifier, \
+    RandomForestRegressor, GradientBoostingClassifier, GradientBoostingRegressor
 from sklearn.linear_model import Lasso, LogisticRegression, Ridge
 from sklearn.metrics import get_scorer
 from sklearn.model_selection import cross_val_score, train_test_split
@@ -130,10 +131,38 @@ linear_cfg = {
     "intercept_scaling": {"type": "real", "space": "log", "range": (1e-2, 1e2)},
 }
 
+##################
+### OUR MODELS ###
+##################
+
+# DT v2
+dt2_cfg = {
+    "criterion": {"type": "cat", "values": ["gini", "entropy"]},
+    "max_depth": {"type": "int", "space": "linear", "range": (1, 15)},
+    "min_samples_split": {"type": "real", "space": "logit", "range": (0.01, 0.99)},
+    "min_samples_leaf": {"type": "real", "space": "logit", "range": (0.01, 0.49)},
+    "min_weight_fraction_leaf": {"type": "real", "space": "logit", "range": (0.01, 0.49)},
+    "max_features": {"type": "real", "space": "logit", "range": (0.01, 0.99)},
+    "min_impurity_decrease": {"type": "real", "space": "linear", "range": (0.0, 0.5)},
+}
+
+# GBT
+gbt_cfg = {
+    "loss": {"type": "cat", "values": ["deviance", "exponential"]},
+    "learning_rate": {"type": "real", "space": "log", "range": (1e-4, 1e1)},
+    "max_depth": {"type": "int", "space": "linear", "range": (2, 10)},
+    "min_samples_split": {"type": "real", "space": "logit", "range": (0.01, 0.99)},
+    "min_samples_leaf": {"type": "real", "space": "logit", "range": (0.01, 0.49)},
+    "min_weight_fraction_leaf": {"type": "real", "space": "logit", "range": (0.01, 0.49)},
+    "max_features": {"type": "cat", "values": ["sqrt", "log2"]},
+    "min_impurity_decrease": {"type": "real", "space": "linear", "range": (0.0, 0.5)},
+}
+
 MODELS_CLF = {
     "kNN": (KNeighborsClassifier, {}, knn_cfg),
     "SVM": (SVC, {"kernel": "rbf", "probability": True}, svm_cfg),
     "DT": (DecisionTreeClassifier, {"max_leaf_nodes": None}, dt_cfg),
+    "DT2": (DecisionTreeClassifier, {"max_leaf_nodes": None}, dt2_cfg),
     "RF": (RandomForestClassifier, {"n_estimators": 10, "max_leaf_nodes": None}, rf_cfg),
     "MLP-adam": (MLPClassifier, {"solver": "adam", "early_stopping": True}, mlp_adam_cfg),
     "MLP-sgd": (
@@ -152,6 +181,7 @@ MODELS_CLF = {
         {"penalty": "l2", "fit_intercept": True, "solver": "liblinear", "multi_class": "ovr"},
         linear_cfg,
     ),
+    "GBT": (GradientBoostingClassifier, {"n_estimators": 10, "max_leaf_nodes": None}, gbt_cfg),
 }
 
 # For now, we will assume the default is to go thru all classifiers
@@ -183,6 +213,7 @@ MODELS_REG = {
     "kNN": (KNeighborsRegressor, {}, knn_cfg),
     "SVM": (SVR, {"kernel": "rbf"}, svm_cfg),
     "DT": (DecisionTreeRegressor, {"max_leaf_nodes": None}, dt_cfg),
+    "DT2": (DecisionTreeRegressor, {"max_leaf_nodes": None}, dt2_cfg),
     "RF": (RandomForestRegressor, {"n_estimators": 10, "max_leaf_nodes": None}, rf_cfg),
     "MLP-adam": (MLPRegressor, {"solver": "adam", "early_stopping": True}, mlp_adam_cfg),
     "MLP-sgd": (
@@ -199,6 +230,7 @@ MODELS_REG = {
     "ada": (AdaBoostRegressor, {}, ada_cfg_reg),
     "lasso": (Lasso, {}, lasso_cfg_reg),
     "linear": (Ridge, {"solver": "auto"}, linear_cfg_reg),
+    "GBT": (GradientBoostingRegressor, {"n_estimators": 10, "max_leaf_nodes": None}, gbt_cfg),
 }
 
 # If both classifiers and regressors match MODEL_NAMES then the experiment
