@@ -232,8 +232,6 @@ def run_sklearn_study(
 
     # Setup optimizer
     api_config = function_instance.get_api_config()
-    print("\nAPI_CONFIG:")
-    print(api_config, "\n")
     optimizer_instance = opt_class(api_config, **opt_kwargs)
 
     assert function_instance.objective_names == OBJECTIVE_NAMES
