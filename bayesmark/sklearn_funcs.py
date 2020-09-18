@@ -148,7 +148,7 @@ dt2_cfg = {
 
 # GBT
 gbt_cfg = {
-    "loss": {"type": "cat", "values": ["deviance", "exponential"]},
+    "criterion": {"type": "cat", "values": ["friedman_mse", "mse", "mae"]},
     "learning_rate": {"type": "real", "space": "log", "range": (1e-4, 1e1)},
     "max_depth": {"type": "int", "space": "linear", "range": (2, 10)},
     "min_samples_split": {"type": "real", "space": "logit", "range": (0.01, 0.99)},
