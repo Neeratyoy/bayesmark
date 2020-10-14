@@ -158,6 +158,18 @@ gbt_cfg = {
     "min_impurity_decrease": {"type": "real", "space": "linear", "range": (0.0, 0.5)},
 }
 
+# SANITY check model
+sanity_cfg = {  # modified GBT
+    "criterion": {"type": "cat", "values": ["friedman_mse", "mse", "mae"]},
+    "learning_rate": {"type": "real", "space": "log", "range": (1e-4, 1e1)},
+    "max_depth": {"type": "int", "space": "linear", "values": [2, 4, 6, 8, 10]},
+    "min_samples_split": {"type": "real", "space": "logit", "range": (0.01, 0.99)},
+    "min_samples_leaf": {"type": "real", "space": "logit", "range": (0.01, 0.49)},
+    "min_weight_fraction_leaf": {"type": "real", "space": "logit", "range": (0.01, 0.49)},
+    "max_features": {"type": "cat", "values": ["sqrt", "log2"]},
+    "min_impurity_decrease": {"type": "real", "space": "linear", "values": [0.0, 0.1, 0.2, 0.3, 0.4, 0.5]},
+}
+
 MODELS_CLF = {
     "kNN": (KNeighborsClassifier, {}, knn_cfg),
     "SVM": (SVC, {"kernel": "rbf", "probability": True}, svm_cfg),
@@ -182,6 +194,7 @@ MODELS_CLF = {
         linear_cfg,
     ),
     "GBT": (GradientBoostingClassifier, {"n_estimators": 10, "max_leaf_nodes": None}, gbt_cfg),
+    "SANITY": (GradientBoostingClassifier, {"n_estimators": 10, "max_leaf_nodes": None}, sanity_cfg),
 }
 
 # For now, we will assume the default is to go thru all classifiers
@@ -231,6 +244,7 @@ MODELS_REG = {
     "lasso": (Lasso, {}, lasso_cfg_reg),
     "linear": (Ridge, {"solver": "auto"}, linear_cfg_reg),
     "GBT": (GradientBoostingRegressor, {"n_estimators": 10, "max_leaf_nodes": None}, gbt_cfg),
+    "SANITY": (GradientBoostingRegressor, {"n_estimators": 10, "max_leaf_nodes": None}, sanity_cfg),
 }
 
 # If both classifiers and regressors match MODEL_NAMES then the experiment
