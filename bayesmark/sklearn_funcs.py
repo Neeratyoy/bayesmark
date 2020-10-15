@@ -163,18 +163,18 @@ sanity1_cfg = {  # modified GBT
     "criterion": {"type": "cat", "values": ["friedman_mse", "mse", "mae"]},  # 3 categories
     "learning_rate": {"type": "real", "space": "log", "range": (1e-4, 1e1)},
     "max_depth": {"type": "int", "space": "linear", "range": (2, 10)},
-    "min_samples_split": {"type": "real", "space": "bilog", "range": (0.01, 0.99)},
-    "min_samples_leaf": {"type": "real", "space": "logit", "range": (0.01, 0.49)},
-    "min_weight_fraction_leaf": {"type": "real", "space": "bilog", "range": (0.01, 0.49)},   # real with bilog
+    "min_samples_split": {"type": "real", "space": "bilog", "values": [0.01, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.99]},  # real with bilog and values
+    "min_samples_leaf": {"type": "real", "space": "logit", "values": [0.01, 0.1, 0.2, 0.3, 0.4, 0.49]}  # real with logit and values
+    "min_weight_fraction_leaf": {"type": "real", "space": "bilog", "range": (0.01, 0.49)},   # real with bilog and range
     "max_features": {"type": "cat", "values": ["sqrt", "log2"]},
     "min_impurity_decrease": {"type": "real", "space": "linear", "values": [0.0, 0.1, 0.2, 0.3, 0.4, 0.5]},  # real with param_values
 }
 
 # SANITY 2
-sanity2_cfg = {
-    "n_neighbors": {"type": "int", "space": "bilog", "range": (1, 25)},  # int with bilog
+sanity2_cfg = {  # modified and extended kNN
+    "n_neighbors": {"type": "int", "space": "bilog", "range": (1, 25)},  # int with bilog and range
     "p": {"type": "int", "space": "linear", "values": [1, 2, 3, 4]},  # int with param_values
-    # "leaf_size": {"type": "int", "space": "logit", "range": (10, 50)},  # int with logit
+    "leaf_size": {"type": "int", "space": "bilog", "values": [10, 20, 30, 40, 50]},  # int with bilog and values
 }
 
 MODELS_CLF = {
