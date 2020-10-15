@@ -164,7 +164,7 @@ sanity1_cfg = {  # modified GBT
     "learning_rate": {"type": "real", "space": "log", "range": (1e-4, 1e1)},
     "max_depth": {"type": "int", "space": "linear", "range": (2, 10)},
     "min_samples_split": {"type": "real", "space": "bilog", "values": [0.01, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.99]},  # real with bilog and values
-    "min_samples_leaf": {"type": "real", "space": "logit", "values": [0.01, 0.1, 0.2, 0.3, 0.4, 0.49]}  # real with logit and values
+    "min_samples_leaf": {"type": "real", "space": "logit", "values": [0.01, 0.1, 0.2, 0.3, 0.4, 0.49]},  # real with logit and values
     "min_weight_fraction_leaf": {"type": "real", "space": "bilog", "range": (0.01, 0.49)},   # real with bilog and range
     "max_features": {"type": "cat", "values": ["sqrt", "log2"]},
     "min_impurity_decrease": {"type": "real", "space": "linear", "values": [0.0, 0.1, 0.2, 0.3, 0.4, 0.5]},  # real with param_values
